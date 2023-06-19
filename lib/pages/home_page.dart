@@ -1,6 +1,8 @@
 import 'package:firstapp/design/colors.dart';
 import 'package:flutter/material.dart';
 
+//PRINCIPAL WIDGET FOR HOMEPAGE, INCLUDES APPBAR (NAV) AND BODY
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -22,6 +24,8 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+//AppBarContent INCLUDES THE CONTENT OF THE APPBAR EXCEPT FOR SOME STYLES
 
 class AppBarContent extends StatelessWidget {
   const AppBarContent({Key? key}) : super(key: key);
@@ -74,6 +78,8 @@ class AppBarContent extends StatelessWidget {
     );
   }
 }
+
+// ContainerHeaderIcon Class Helps organize and reutilize the icon box with same size.
 
 class ContainerHeaderIcon extends StatelessWidget {
   final IconButton iconButton;
