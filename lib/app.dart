@@ -7,6 +7,9 @@ class FirstApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: Themes.defaultTheme, home: const HomePage());
+    return MaterialApp(
+        theme: Themes.defaultTheme,
+        debugShowCheckedModeBanner: false,
+        home: const BottomBar());
   }
 }

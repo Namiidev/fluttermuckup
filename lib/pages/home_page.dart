@@ -1,104 +1,70 @@
 import 'package:firstapp/design/colors.dart';
+import 'package:firstapp/pages/home_screen.dart';
+import 'package:firstapp/widgets/appbar_title.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 
-//PRINCIPAL WIDGET FOR HOMEPAGE, INCLUDES APPBAR (NAV) AND BODY
+//PRINCIPAL WIDGET FOR HOMEPAGE, INCLUDES APPBAR (NAV) / BODY / AND THE BOTTOMBAR ALL IN ONCE
+//THE BOTTOM BAR HAS THE FUNCTIONALITY ADDED THANKS TO _BottomBarState (Tipically has this name).
+//SO IT CHANGES OF SCREEN ===> WE USE THE $selectedIndex connected to method $_onItemTapped that
+//gets an int index AND THAT INDEX IS OBTAINED BY THE "onTap" METHOD OF THE bottomNavigationBar
+//WHICH IS ALSO PART FLUTTER/MATERIALAPP SKELETON... WELL THE onTap METHOS PROVIDES DE INDEX PARAMETER
+// OF OUR _onItemTapped method so we can change the state of our selectedIndex... then we use setState(){}.
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class BottomBar extends StatefulWidget {
+  const BottomBar({super.key});
+
+  @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int selectedIndex = 0;
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomeScreen(),
+    const Text("Search"),
+    const Text("Tickets"),
+    const Text("Account"),
+  ];
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16))),
-        backgroundColor: AppColors.brandLightColor,
-        toolbarHeight: 97,
-        title: const AppBarContent(),
+      body: Center(
+        child: _widgetOptions[selectedIndex],
       ),
-      body: const Center(
-        child: Text("Texto en el centro de la app"),
-      ),
-    );
-  }
-}
-
-//AppBarContent INCLUDES THE CONTENT OF THE APPBAR EXCEPT FOR SOME STYLES
-
-class AppBarContent extends StatelessWidget {
-  const AppBarContent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 45, 16, 12),
-      child: Row(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(right: 12),
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              color: Colors.black26,
-              image: DecorationImage(
-                image: AssetImage('../../assets/images/user.png'),
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              "Store Name",
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-          ),
-          ContainerHeaderIcon(
-            configMargin: const EdgeInsets.only(right: 12),
-            iconButton: IconButton(
-              onPressed: () => print("button pressed"),
-              icon: const Icon(
-                Icons.notifications,
-                color: AppColors.brandPrimaryColor,
-              ),
-            ),
-          ),
-          ContainerHeaderIcon(
-            iconButton: IconButton(
-              onPressed: () => print("button pressed"),
-              icon: const Icon(
-                Icons.more_vert,
-                color: AppColors.brandPrimaryColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ContainerHeaderIcon Class Helps organize and reutilize the icon box with same size.
-
-class ContainerHeaderIcon extends StatelessWidget {
-  final IconButton iconButton;
-  final EdgeInsets? configMargin;
-  const ContainerHeaderIcon(
-      {super.key, required this.iconButton, this.configMargin});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: configMargin,
-      height: 40,
-      width: 40,
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.brandLightColorBorder,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(12))),
-      child: iconButton,
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          onTap: _onItemTapped,
+          elevation: 10,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedItemColor: Colors.blueGrey,
+          unselectedItemColor: const Color(0xFF526480),
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(FluentSystemIcons.ic_fluent_home_regular),
+                activeIcon: Icon(FluentSystemIcons.ic_fluent_home_filled),
+                label: "home"),
+            BottomNavigationBarItem(
+                icon: Icon(FluentSystemIcons.ic_fluent_search_regular),
+                activeIcon: Icon(FluentSystemIcons.ic_fluent_search_filled),
+                label: "search"),
+            BottomNavigationBarItem(
+                icon: Icon(FluentSystemIcons.ic_fluent_ticket_regular),
+                activeIcon: Icon(FluentSystemIcons.ic_fluent_ticket_filled),
+                label: "tickets"),
+            BottomNavigationBarItem(
+                icon: Icon(FluentSystemIcons.ic_fluent_person_regular),
+                activeIcon: Icon(FluentSystemIcons.ic_fluent_person_filled),
+                label: "account"),
+          ]),
     );
   }
 }
